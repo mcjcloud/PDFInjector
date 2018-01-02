@@ -64,7 +64,7 @@ public class App
         System.out.println(Arrays.toString(args));
         
         // loop through the arguments, setting the flags
-        for(int i = 1; i < args.length; i++) 
+        for(int i = 0; i < args.length; i++) 
         {
         	// try to populate the parameters
         	try
@@ -97,6 +97,12 @@ public class App
         		System.out.println("Missing data for parameter " + args[i]);
         		System.exit(1);
         	}
+        }
+        
+        // print flags
+        for(String key : flags.keySet())
+        {
+        	System.out.println(key + ": " + flags.get(key));
         }
         
         // check for flag conflicts
@@ -148,6 +154,7 @@ public class App
 							line = br.readLine();
 							jsonStr += line;
 						}
+						br.close();
 						data = Json.parse(jsonStr).asObject();
 						
 					} 
@@ -186,7 +193,7 @@ public class App
         	System.out.println("File " + parameters.get("i") + " does not exist.");
         	System.exit(1);
         }
-        String[] parts = pdfInput.getName().split(".");
+        String[] parts = parameters.get("i").split("\\.");
     	if(!parts[parts.length - 1].toLowerCase().equals("pdf"))
     	{
     		// not a valid PDF
@@ -204,6 +211,7 @@ public class App
     	File pdfOutput = new File(parameters.get("o"));
     	try
     	{
+    		new File(pdfOutput.getParent()).mkdirs();
     		pdfOutput.createNewFile();
     	}
     	catch(IOException ioe)
@@ -213,7 +221,17 @@ public class App
     	}
     	
     	// everything checks out here, move to processing
-    	boolean success = Injector.inject(data, pdfInput, pdfOutput);
+    	boolean success;
+    	if(flags.get("p"))
+    	{
+    		success = Injector.inject(pdfInput, pdfOutput);
+    	}
+    	else
+    	{
+    		success = Injector.inject(data, pdfInput, pdfOutput);
+    	}
+    	
+    	// print result
     	if(success)
     	{
     		System.out.println("Success. Output file at " + pdfOutput.getAbsolutePath());
