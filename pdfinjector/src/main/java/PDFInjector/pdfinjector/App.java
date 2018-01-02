@@ -61,7 +61,6 @@ public class App
         	System.out.println("Parameters missing closing quotation mark.");
         	System.exit(1);
         }
-        System.out.println(Arrays.toString(args));
         
         // loop through the arguments, setting the flags
         for(int i = 0; i < args.length; i++) 
@@ -97,12 +96,6 @@ public class App
         		System.out.println("Missing data for parameter " + args[i]);
         		System.exit(1);
         	}
-        }
-        
-        // print flags
-        for(String key : flags.keySet())
-        {
-        	System.out.println(key + ": " + flags.get(key));
         }
         
         // check for flag conflicts
