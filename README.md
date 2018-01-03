@@ -15,15 +15,15 @@ PDFInjector is a commandline utility takes a PDF file and JSON data as input, an
 ## Example
 1. Filling out the fields with their names.
 
-`$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -p`
+```$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -p```
 
 2. Filling out the fields from a json file
 
-`$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -d /path/to/data.json`
+```$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -d /path/to/data.json```
 
 3. Filling out the fields from direct json data
 
-`$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -d {\"fields\":[{\"key\":\"name-field\",\"value\":\"John Doe\"}]}`
+```$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -d {\"fields\":[{\"key\":\"name-field\",\"value\":\"John Doe\"}]}```
 
 ## JSON Format
 The JSON must have quotation marks around both the keys and values. All keys and values will be read from the `fields` array.
