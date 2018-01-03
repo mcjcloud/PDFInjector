@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 //import com.codesnippets4all.*;
 
@@ -37,7 +38,7 @@ public class App
 	 * 
 	 * @param args
 	 */
-    public static void main(String[] input) 
+    public static void main(String[] args) 
     {
     	// initialize the flags dictionary
         flags = new HashMap<String, Boolean>();
@@ -48,19 +49,6 @@ public class App
         flags.put("h", false);
         // init the parameters hashmap
         parameters = new HashMap<String, String>();
-        
-        // format the program input
-        String[] args = {};
-        try
-        {
-        	args = formatArgs(input);
-        } 
-        catch(Exception e)
-        {
-        	// invalid quotes
-        	System.out.println("Parameters missing closing quotation mark.");
-        	System.exit(1);
-        }
         
         // loop through the arguments, setting the flags
         for(int i = 0; i < args.length; i++) 
@@ -121,14 +109,15 @@ public class App
         	System.exit(1);
         }
         
-        JsonObject data = new JsonObject();
+        JsonArray data = new JsonArray();
         // check that the input is valid
         if(flags.get("d"))
         {
         	// try to parse the input as a json
         	try
         	{
-        		data = Json.parse(parameters.get("d")).asObject(); 
+        		JsonObject obj = Json.parse(parameters.get("d")).asObject(); 
+        		data = obj.get("fields").asArray();
         	}
         	catch(Exception e)
         	{
@@ -141,14 +130,15 @@ public class App
         			{
 						BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(jsonFile)));
 						String jsonStr = "";
-						String line = "";
+						String line = br.readLine();
 						while(line != null)
 						{
-							line = br.readLine();
 							jsonStr += line;
+							line = br.readLine();
 						}
 						br.close();
-						data = Json.parse(jsonStr).asObject();
+						JsonObject obj = Json.parse(jsonStr).asObject(); 
+						data = obj.get("fields").asArray();
 						
 					} 
         			catch (FileNotFoundException fnfe) 
@@ -177,6 +167,13 @@ public class App
         			System.exit(1);
         		}
         	}
+        	
+        	if(data == null)
+    		{
+    			System.out.println("'fields' property not found in JSON");
+    			printHelp();
+    			System.exit(1);
+    		}
         }
         
         // check that the input pdf file is valid
@@ -242,55 +239,16 @@ public class App
      */
     public static void printHelp() 
     {
-    	System.out.println("\nHELP MESSAGE\n");
-    }
-    
-    /**
-     * takes an array of Strings and returns a new array where any args with quotes are put together
-     * 
-     * @param args
-     * @return
-     */
-    public static String[] formatArgs(String[] args) throws Exception
-    {
-    	ArrayList<String> result = new ArrayList<String>();
-    	// format the arguments so that quotes are together
-        String arg = "";
-        boolean append = false;
-        for(int i = 0; i < args.length; i++) 
-        {
-        	// 
-        	if(args[i].startsWith("\""))
-        	{
-        		args[i] = args[i].substring(1);
-        		append = true;
-        	}
-        	else if(args[i].endsWith("\""))
-        	{
-        		append = false;
-        		arg += args[i].substring(0, args[i].length() - 1);
-        		result.add(arg);
-        		continue;
-        	}
-        	
-        	// if append == true, append the argument to string, else just put it on the result
-        	if(append)
-        	{
-        		arg += args[i];
-        		
-        		// if this is the last argument, then a closing " was never provided
-        		if(i == args.length - 1)
-        		{
-        			throw new Exception();
-        		}
-        	}
-        	else 
-        	{
-        		result.add(args[i]);
-        	}
-        }
-        
-        // return the result as a normal array
-        return result.toArray(new String[result.size()]);
+    	System.out.println();
+    	System.out.println("PDFInjector Help");
+    	System.out.println("Flags:");
+    	System.out.println("\t-h Show this help message.");
+    	System.out.println("\t-i Input PDF file path, template PDF.");
+    	System.out.println("\t-o Output file path, a new PDF document is created here.");
+    	System.out.println("\t-d Data. Either in JSON format, or the path to a json file.");
+    	System.out.println("\t-p Populate the PDF with the names of each form. Run this first to find out the fields of your PDF.");
+    	System.out.println();
+    	System.out.println("See https://github.com/mcjcloud/PDFInjector for information on JSON format, etc.");
+    	System.out.println();
     }
 }
