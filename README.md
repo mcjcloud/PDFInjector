@@ -1,5 +1,5 @@
 # PDFInjector
-PDFInjector is a commandline utility takes a PDF file and JSON data as input, and generates a new PDF, filling its forms with the data from the JSON. The new PDF is saved to the output directory specified by `-o` along with `summary.txt` which shows the fields that were successfully filled.
+PDFInjector is a commandline utility that takes a PDF file and JSON data as input, and generates a new PDF, filling its forms with the data from the JSON. The new PDF is saved to the output directory specified by `-o` along with `summary.txt` which shows the fields that were successfully filled.
 
 ## Usage
 1. Clone the project and compile it into a jar OR download the jar directly from the releases page.
