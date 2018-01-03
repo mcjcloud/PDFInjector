@@ -14,7 +14,7 @@ PDFInjector is a commandline utility takes a PDF file and JSON data as input, an
 
 ## Example
 1. Filling out the fields with their names.
-`$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -p`
+```$ java -jar pdfinjector.jar -i /path/to/document.pdf -o /path/to/destination/output.pdf -p```
 
 2. Filling out the fields from a json file
 ```
