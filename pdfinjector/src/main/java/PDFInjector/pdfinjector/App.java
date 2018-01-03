@@ -209,6 +209,11 @@ public class App
     		System.out.println("Could not create output PDF");
     		System.exit(1);
     	}
+    	catch(NullPointerException npe)
+    	{
+    		System.out.println("File directory invalid. If the the file is in the current working directory, consider prepending ./");
+    		System.exit(1);
+    	}
     	
     	// everything checks out here, move to processing
     	boolean success;
